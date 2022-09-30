@@ -18,12 +18,25 @@ class Inventory {
     }
 
     fun print_inventory(){
-        for (categories in this.inventory.keys){
-            var aux = this.inventory[categories]
-            if(categories == "roupa") {
+        for (category in this.inventory.keys){
+            var aux = this.inventory[category]
+            println("--------------- ($category)")
+            if(category == "roupa"){
                 for(r in aux!!){
                     r as Clothes
-                    println(r.get_type())
+                    println(r)
+                }
+            }
+            else if(category == "colecionavel"){
+                for(r in aux!!){
+                    r as Collectible
+                    println(r)
+                }
+            }
+            else{
+                for(r in aux!!){
+                    r as Eletronics
+                    println(r)
                 }
             }
         }

@@ -15,6 +15,10 @@ open class Products(var name: String, var p_buy: Float, var p_sale: Float, var c
         return this.qnt
     }
 
+    fun get_cat(): String{
+        return this.category
+    }
+
     override fun toString(): String{
         return "${this.category}-${this.cod}"
     }

@@ -6,10 +6,9 @@ fun main(args: Array<String>) {
     val a3 = Eletronics("Playstation 5", 4000f, 4500f, "PLAY5", 2,  "video-game", 1, 2022)
     val a4 = Collectible("Caneca do Mario Bros", 12.57f, 25f, "CANMAR", 20, "outros", "outros", "-", "comum")
 
-    var inv = Inventory()
+    // inv.new_product("roupa", "Camisa mestre yoda", "22.35", "41.50","CAMYO", "13", "camisa", "GG", "preto", "vermelho")
+    // inv.print_inventory()
 
-    inv.new_product("roupa", "Camisa mestre yoda", "22.35", "41.50","CAMYO", "13", "camisa", "GG", "preto", "vermelho")
-
-    inv.print_inventory()
-    //println("A1: ${a1}")
+    val loja = Loja()
+    loja.read_compras("src/main/resources/entrada/compras.csv")
 }
