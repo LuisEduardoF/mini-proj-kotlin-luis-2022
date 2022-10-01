@@ -10,5 +10,10 @@ fun main(args: Array<String>) {
     // inv.print_inventory()
 
     val loja = Loja()
+
+    println("COMPRAS:")
     loja.read_compras("src/main/resources/entrada/compras.csv")
+    println("VENDAS:")
+    loja.read_vendas("src/main/resources/entrada/vendas.csv")
+    loja.get_balancente()
 }
