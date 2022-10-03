@@ -1,6 +1,5 @@
 # mini-proj-kotlin-luis-2022
 
-# Kotlin mini-project
 The objective of this mini project is basically to put into practice the knowledge acquired in the Kotlin programming language. The project was designed for you to exercise, mainly, the concepts of object orientation and collections using the language. In addition, this mini-project will count as **10% of the final grade of the course and must be done individually.**
 
 # Description
