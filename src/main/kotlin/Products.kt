@@ -1,5 +1,3 @@
-package products
-
 abstract class Products(var name: String, var p_buy: Float, var p_sale: Float, var cod: String, var qnt: Int){
     lateinit var category: String
     private var qnt_sale = 0

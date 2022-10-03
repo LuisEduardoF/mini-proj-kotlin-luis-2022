@@ -1,5 +1,3 @@
-package products
-
 private enum class Size(val size: String) {
     PP("PP"), P("P"), M("M"), G("G"), GG("GG"), XG("XG"), XXG("XXG")
 }

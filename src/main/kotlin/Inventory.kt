@@ -1,4 +1,7 @@
-package products
+import Clothes
+import Collectible
+import Eletronics
+import Products
 
 enum class Categories(val cat: String){
     COLECIONAVEL("C"), ROUPA("R"), ELETRONICO("E")
@@ -12,13 +15,42 @@ class Inventory {
         val cod = input[3]
 
         if(category == Categories.COLECIONAVEL){
-            aux = Collectible(input[0], input[1].toFloat(), input[2].toFloat(), cod, input[4].toInt(), input[5], input[6], input[7], input[8])
+            aux = Collectible(
+                input[0],
+                input[1].toFloat(),
+                input[2].toFloat(),
+                cod,
+                input[4].toInt(),
+                input[5],
+                input[6],
+                input[7],
+                input[8]
+            )
         }
         else if(category == Categories.ROUPA){
-            aux = Clothes(input[0], input[1].toFloat(), input[2].toFloat(), cod, input[4].toInt(), input[5], input[6], input[7], input[8])
+            aux = Clothes(
+                input[0],
+                input[1].toFloat(),
+                input[2].toFloat(),
+                cod,
+                input[4].toInt(),
+                input[5],
+                input[6],
+                input[7],
+                input[8]
+            )
         }
         else{
-            aux = Eletronics(input[0], input[1].toFloat(), input[2].toFloat(), cod, input[4].toInt(), input[5], input[6].toInt(), input[7].toInt())
+            aux = Eletronics(
+                input[0],
+                input[1].toFloat(),
+                input[2].toFloat(),
+                cod,
+                input[4].toInt(),
+                input[5],
+                input[6].toInt(),
+                input[7].toInt()
+            )
         }
         this.inventory[category]?.put(cod, aux)
     }

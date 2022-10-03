@@ -1,4 +1,3 @@
-package products
 import org.jetbrains.kotlinx.dataframe.*
 import org.jetbrains.kotlinx.dataframe.api.append
 import org.jetbrains.kotlinx.dataframe.api.dataFrameOf
@@ -65,7 +64,7 @@ class Loja() {
         }
     }
 
-    fun process_busca(csv: String){
+    fun process_busca(csv: String, args: String){
         val df = DataFrame.read(csv)
         var res = dataFrameOf(Pair("BUSCAS", listOf()), Pair("QUANTIDADE", listOf()))
         for(row in df.rows()){
@@ -74,7 +73,7 @@ class Loja() {
             list.forEach{ sum += it.qnt }
             res = res.append(row.index() + 1, sum)
         }
-        res.writeCSV("src/main/resources/saida/resultado_busca.csv")
+        res.writeCSV("${args}/resultado_busca.csv")
     }
     fun get_balancente(args: String){
         val dformat = DecimalFormat("#.##")

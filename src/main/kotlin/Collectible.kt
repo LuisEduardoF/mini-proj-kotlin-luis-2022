@@ -1,5 +1,3 @@
-package products
-
 private enum class Type_C(val type: String) {
     LIVRO("livro"), BONECO("boneco"), OUTROS("outros")
 }

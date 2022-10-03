@@ -15,6 +15,8 @@ repositories {
 dependencies {
     // https://mvnrepository.com/artifact/com.opencsv/opencsv
     implementation("org.jetbrains.kotlinx:dataframe:0.8.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.0")
     testImplementation(kotlin("test"))
 }
 
@@ -28,7 +30,7 @@ tasks.withType<KotlinCompile> {
 
 tasks.jar {
     manifest {
-        attributes["Main-Class"] = "Main.kt"
+        attributes["Main-Class"] = "MainKt"
     }
     configurations["compileClasspath"].forEach { file: File ->
         from(zipTree(file.absoluteFile))

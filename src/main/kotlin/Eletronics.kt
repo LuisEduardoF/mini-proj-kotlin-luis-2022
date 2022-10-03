@@ -1,5 +1,3 @@
-package products
-
 private enum class Type(val type: String) {
     VIDEO_GAME("video-game"), JOGO("jogos"), OUTROS("outros")
 }
