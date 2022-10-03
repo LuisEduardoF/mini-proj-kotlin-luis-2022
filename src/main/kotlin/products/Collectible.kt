@@ -27,4 +27,44 @@ class Collectible(name: String, p_buy: Float, p_sale: Float, cod: String, qnt: I
         this.material = Mat_f.valueOf(material.uppercase())
         this.relevance = Relevance.valueOf(relevance.uppercase())
     }
+    override fun check_search(info: Map<String, String>): Boolean {
+        val type = info["Tipo"].toString().uppercase();
+        val size = info["Tamanho"].toString();
+        val mat = info["Material de fabricação"].toString().uppercase();
+        val rel = info["Relevância"].toString().uppercase();
+
+        if(type != "-") {
+            try {
+                if (this.type != Type_C.valueOf(type)) {
+                    return false
+                }
+            } catch (e: Exception){
+                return false
+            }
+        }
+        if(size != "-") {
+            if (this.size != size) {
+                return false
+            }
+        }
+        if(mat != "-") {
+            try {
+                if (this.material != Mat_f.valueOf(mat)) {
+                    return false
+                }
+            } catch (e: Exception){
+                return false
+            }
+        }
+        if(rel != "-"){
+            try {
+                if (this.relevance != Relevance.valueOf(rel)) {
+                    return false
+                }
+            } catch (e: Exception){
+                return false
+            }
+        }
+        return true
+    }
 }

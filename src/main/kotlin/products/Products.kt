@@ -1,6 +1,6 @@
 package products
 
-open class Products(var name: String, var p_buy: Float, var p_sale: Float, var cod: String, var qnt: Int){
+abstract class Products(var name: String, var p_buy: Float, var p_sale: Float, var cod: String, var qnt: Int){
     lateinit var category: String
     private var qnt_sale = 0
 
@@ -27,6 +27,8 @@ open class Products(var name: String, var p_buy: Float, var p_sale: Float, var c
     fun get_cat(): String{
         return this.category
     }
+
+    abstract fun check_search(info: Map<String, String>) : Boolean
 
     override fun toString(): String{
         return "${this.category}-${this.cod}:${this.p_buy}, ${this.p_sale}"

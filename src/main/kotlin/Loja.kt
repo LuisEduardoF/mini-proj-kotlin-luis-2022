@@ -1,19 +1,19 @@
 package products
-import org.apache.commons.csv.CSVFormat
 import org.jetbrains.kotlinx.dataframe.*
+import org.jetbrains.kotlinx.dataframe.api.append
 import org.jetbrains.kotlinx.dataframe.api.dataFrameOf
-import org.jetbrains.kotlinx.dataframe.api.head
 import org.jetbrains.kotlinx.dataframe.api.rows
+import org.jetbrains.kotlinx.dataframe.api.toMap
 import org.jetbrains.kotlinx.dataframe.io.read
 import org.jetbrains.kotlinx.dataframe.io.toCsv
 import org.jetbrains.kotlinx.dataframe.io.writeCSV
+import java.text.DecimalFormat
 
 class Loja() {
     var inv = Inventory()
 
     fun read_compras(csv: String){
         val df = DataFrame.read(csv)
-        print(df.head())
         for (row in df.rows()){
             val cod = row["Código"].toString();
             val qnt = row["Quantidade"].toString();
@@ -39,8 +39,6 @@ class Loja() {
             else{
                 this.inv.new_product(cat, name, p_buy, p_sale, cod, qnt, type, ver, year)
             }
-            this.inv.print_inventory()
-            println("\n")
         }
     }
 
@@ -65,16 +63,44 @@ class Loja() {
             }
             this.inv.update_product_sale(category, cod, qnt_sale)
         }
-        this.inv.print_inventory()
-        println("\n")
     }
 
+    fun process_busca(csv: String){
+        val df = DataFrame.read(csv)
+        var res = dataFrameOf(Pair("BUSCAS", listOf()), Pair("QUANTIDADE", listOf()))
+        for(row in df.rows()){
+            var list = this.inv.get_busca(row.toMap())
+            var sum = 0
+            list.forEach{ sum += it.qnt }
+            res = res.append(row.index() + 1, sum)
+        }
+        res.writeCSV("src/main/resources/saida/resultado_busca.csv")
+    }
     fun get_balancente(){
-        val buy = this.inv.get_buy_balance()
-        val sale = this.inv.get_sale_balance()
-        val df = dataFrameOf(Pair("", listOf("COMPRAS", "VENDAS", "BALANCETE")), Pair("", listOf(buy, sale, buy-sale)))
+        val dformat = DecimalFormat("#.##")
+        val buy: Float = this.inv.get_buy_balance()
+        val sale: Float = this.inv.get_sale_balance()
+        val balancete: Float = sale - buy
 
-        df.toCsv(CSVFormat.DEFAULT.withSkipHeaderRecord())
+        val df = dataFrameOf(Pair("COMPRAS", listOf("VENDAS", "BALANCETE")), Pair(dformat.format(buy), listOf(dformat.format(sale), dformat.format(balancete))))
+
+        df.writeCSV("src/main/resources/saida/balancete.csv")
     }
 
+    fun get_estoque_geral(){
+        var df = dataFrameOf(Pair("CODIGO", listOf()), Pair("NOME", listOf()), Pair("QUANTIDADE", listOf()))
+        for(prod in this.inv.get_estoque_geral()){
+            df = df.append("${prod.category + "-" + prod.cod}", prod.name, prod.qnt)
+        }
+        df.writeCSV("src/main/resources/saida/estoque_geral.csv")
+    }
+
+    fun get_estoque_cat(){
+        var df = dataFrameOf(Pair("CATERGORIA", listOf()), Pair("QUANTIDADE", listOf()))
+        val result = this.inv.get_estoque_cat()
+        for(prod in result){
+            df = df.append(prod.key, prod.value)
+        }
+        df.writeCSV("src/main/resources/saida/estoque_categorias.csv")
+    }
 }

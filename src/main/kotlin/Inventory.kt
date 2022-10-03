@@ -48,4 +48,46 @@ class Inventory {
     fun update_product_sale(cat: Categories, cod: String, sale: Int){
         this.inventory[cat]?.get(cod)?.update_qnt_sale(sale)
     }
+
+    fun get_estoque_geral(): List<Products>{
+        var list: List<Products> = mutableListOf()
+        for(prods in this.inventory.values){
+            list += prods.values
+        }
+        return list
+    }
+
+    fun get_estoque_cat(): Map<Categories, Int>{
+        var map: Map<Categories, Int> = mutableMapOf()
+        for(cat in this.inventory.keys){
+            var sum = 0
+            for(prod in this.inventory[cat]?.values!!){
+                sum += prod.qnt
+            }
+            map += Pair(cat, sum)
+        }
+        return map
+    }
+    fun get_busca(info: Map<String, Any?>): List<Products>{
+        var list: List<Products> = listOf()
+        val cat = info["Categoria"].toString().uppercase()
+        if(cat != "-"){
+            for(prod in this.inventory[Categories.valueOf(cat)]?.values!!){
+                if(prod.check_search(info as Map<String, String>)){
+                    list += prod
+                }
+            }
+        }
+        else{
+            for(cat in this.inventory.keys){
+                for(prod in this.inventory[cat]?.values!!){
+                    if(prod.check_search(info as Map<String, String>)){
+                        list += prod
+                    }
+                }
+            }
+        }
+        return list
+    }
+
 }
