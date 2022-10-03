@@ -76,7 +76,7 @@ class Loja() {
         }
         res.writeCSV("src/main/resources/saida/resultado_busca.csv")
     }
-    fun get_balancente(){
+    fun get_balancente(args: String){
         val dformat = DecimalFormat("#.##")
         val buy: Float = this.inv.get_buy_balance()
         val sale: Float = this.inv.get_sale_balance()
@@ -84,23 +84,23 @@ class Loja() {
 
         val df = dataFrameOf(Pair("COMPRAS", listOf("VENDAS", "BALANCETE")), Pair(dformat.format(buy), listOf(dformat.format(sale), dformat.format(balancete))))
 
-        df.writeCSV("src/main/resources/saida/balancete.csv")
+        df.writeCSV("${args}/balancete.csv")
     }
 
-    fun get_estoque_geral(){
+    fun get_estoque_geral(args: String){
         var df = dataFrameOf(Pair("CODIGO", listOf()), Pair("NOME", listOf()), Pair("QUANTIDADE", listOf()))
         for(prod in this.inv.get_estoque_geral()){
             df = df.append("${prod.category + "-" + prod.cod}", prod.name, prod.qnt)
         }
-        df.writeCSV("src/main/resources/saida/estoque_geral.csv")
+        df.writeCSV("${args}/estoque_geral.csv")
     }
 
-    fun get_estoque_cat(){
+    fun get_estoque_cat(args: String){
         var df = dataFrameOf(Pair("CATERGORIA", listOf()), Pair("QUANTIDADE", listOf()))
         val result = this.inv.get_estoque_cat()
         for(prod in result){
             df = df.append(prod.key, prod.value)
         }
-        df.writeCSV("src/main/resources/saida/estoque_categorias.csv")
+        df.writeCSV("${args}/estoque_categorias.csv")
     }
 }
