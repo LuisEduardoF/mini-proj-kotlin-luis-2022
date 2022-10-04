@@ -7,9 +7,12 @@ enum class Categories(val cat: String){
     COLECIONAVEL("C"), ROUPA("R"), ELETRONICO("E")
 }
 
-class Inventory {
-    var inventory: MutableMap<Categories, MutableMap<String, Products>> = mutableMapOf(Categories.COLECIONAVEL to mutableMapOf<String, Products>(), Categories.ROUPA to mutableMapOf<String, Products>(), Categories.ELETRONICO to mutableMapOf<String, Products>())
+enum class Categories_suffix(val cat: Categories){
+    R(Categories.ROUPA), C(Categories.COLECIONAVEL), E(Categories.ELETRONICO)
+}
 
+class Inventory {
+    var inventory: MutableList<Products> = mutableListOf()
     fun new_product(category: Categories, vararg input: String){
         val aux: Products
         val cod = input[3]
@@ -52,50 +55,40 @@ class Inventory {
                 input[7].toInt()
             )
         }
-        this.inventory[category]?.put(cod, aux)
+        this.inventory += aux
     }
 
     fun print_inventory(){
-        for (category in this.inventory.keys){
-            var aux = this.inventory[category]
-            println("--------------- ($category)")
-            for(r in aux!!){
-                println(r.value)
-            }
+        for (prod in this.inventory){
+            println(prod)
         }
     }
 
     fun get_buy_balance(): Float{
         var sum: Float = 0f
-        this.inventory.forEach { it.value.forEach{ sum += it.value.get_buy_balance()} }
+        this.inventory.forEach { sum += it.get_buy_balance() }
         return sum
     }
 
     fun get_sale_balance(): Float{
         var sum: Float = 0f
-        this.inventory.forEach { it.value.forEach{ sum += it.value.get_sale_balance()} }
+        this.inventory.forEach { sum += it.get_sale_balance() }
         return sum
     }
 
-    fun update_product_sale(cat: Categories, cod: String, sale: Int){
-        this.inventory[cat]?.get(cod)?.update_qnt_sale(sale)
+    fun update_product_sale(cod: String, sale: Int){
+        this.inventory.find { it.cod == cod }?.update_qnt_sale(sale)
     }
 
     fun get_estoque_geral(): List<Products>{
-        var list: List<Products> = mutableListOf()
-        for(prods in this.inventory.values){
-            list += prods.values
-        }
-        return list
+        return this.inventory
     }
 
     fun get_estoque_cat(): Map<Categories, Int>{
         var map: Map<Categories, Int> = mutableMapOf()
-        for(cat in this.inventory.keys){
+        for(cat in listOf<Categories>(Categories.ROUPA, Categories.COLECIONAVEL, Categories.ELETRONICO)){
             var sum = 0
-            for(prod in this.inventory[cat]?.values!!){
-                sum += prod.qnt
-            }
+            this.inventory.forEach { if(Categories_suffix.valueOf(it.category).cat == cat) sum += it.qnt }
             map += Pair(cat, sum)
         }
         return map
@@ -104,22 +97,19 @@ class Inventory {
         var list: List<Products> = listOf()
         val cat = info["Categoria"].toString().uppercase()
         if(cat != "-"){
-            for(prod in this.inventory[Categories.valueOf(cat)]?.values!!){
-                if(prod.check_search(info as Map<String, String>)){
+            for(prod in this.inventory){
+                if(prod.check_search(info as Map<String, String>) && Categories_suffix.valueOf(prod.category).cat == Categories.valueOf(cat)){
                     list += prod
                 }
             }
         }
         else{
-            for(cat in this.inventory.keys){
-                for(prod in this.inventory[cat]?.values!!){
+                for(prod in this.inventory){
                     if(prod.check_search(info as Map<String, String>)){
                         list += prod
                     }
                 }
             }
-        }
         return list
     }
-
 }

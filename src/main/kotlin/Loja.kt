@@ -6,6 +6,9 @@ import org.jetbrains.kotlinx.dataframe.api.toMap
 import org.jetbrains.kotlinx.dataframe.io.read
 import org.jetbrains.kotlinx.dataframe.io.toCsv
 import org.jetbrains.kotlinx.dataframe.io.writeCSV
+import java.io.File
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.text.DecimalFormat
 
 class Loja() {
@@ -25,7 +28,7 @@ class Loja() {
             val c_p = row["Cor primaria"].toString();
             val c_s = row["Cor secundário"].toString();
             val ver = row["Versão"].toString();
-            val year = row["Ano de frabricação"].toString();
+            val year = row["Ano de fabricação"].toString();
             val mat = row["Material de fabricação"].toString();
             val rel = row["Relevância"].toString();
 
@@ -60,11 +63,15 @@ class Loja() {
             else{
                 category = Categories.ELETRONICO
             }
-            this.inv.update_product_sale(category, cod, qnt_sale)
+            this.inv.update_product_sale(cod, qnt_sale)
         }
     }
 
     fun process_busca(csv: String, args: String){
+        if (!File(args).isDirectory) {
+            Files.createDirectory(Paths.get(args))
+        }
+
         val df = DataFrame.read(csv)
         var res = dataFrameOf(Pair("BUSCAS", listOf()), Pair("QUANTIDADE", listOf()))
         for(row in df.rows()){
@@ -95,7 +102,7 @@ class Loja() {
     }
 
     fun get_estoque_cat(args: String){
-        var df = dataFrameOf(Pair("CATERGORIA", listOf()), Pair("QUANTIDADE", listOf()))
+        var df = dataFrameOf(Pair("CATEGORIA", listOf()), Pair("QUANTIDADE", listOf()))
         val result = this.inv.get_estoque_cat()
         for(prod in result){
             df = df.append(prod.key, prod.value)

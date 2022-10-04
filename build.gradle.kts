@@ -6,7 +6,6 @@ plugins {
 }
 
 group = "org.ufes"
-version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()

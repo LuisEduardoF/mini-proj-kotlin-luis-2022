@@ -10,7 +10,7 @@ class Eletronics(name: String, p_buy: Float, p_sale: Float, cod: String, qnt: In
     override fun check_search(info: Map<String, String>): Boolean{
         val type = info["Tipo"]?.uppercase()?.replace("-", "_");
         var ver = info["Versão"];
-        var year = info["Ano de frabricação"];
+        var year = info["Ano de fabricação"];
 
         if(type != "-") {
             try {
